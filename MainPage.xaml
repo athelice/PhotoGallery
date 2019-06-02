@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="PictureApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PictureApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Button x:Name="Add_Image" Content="Add Image" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="AddImage_Click" Height="130" Width="158"/>
+        <GridView Name ="PhotoAlbum" ItemClick="PhotoAlbum_ItemClick"  IsItemClickEnabled="True" SelectionMode="Multiple" HorizontalAlignment="Left" Height="365" Margin="364,235,0,0" VerticalAlignment="Top" Width="708">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Image Stretch="Fill" Source="{Binding ImageData}" Height="192" Width="342" />
+                        <Border Opacity=".8" Background="Black" VerticalAlignment="Bottom" >
+                            <TextBlock Text="{Binding ImageName}" FontSize="18" RequestedTheme="Light"/>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        <TextBlock HorizontalAlignment="Left" Margin="555,53,0,0" Text="Image Library" TextWrapping="Wrap" VerticalAlignment="Top" Height="82" Width="350"  FontSize="50" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="641,148,0,0" Text="Welcome! Add an image!" TextWrapping="Wrap" VerticalAlignment="Top"/>
+    </Grid>
+</Page>
