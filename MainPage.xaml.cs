@@ -19,6 +19,8 @@ using Windows.UI.Xaml.Media.Imaging;
 using System.Text;
 
 using Windows.Storage.FileProperties;
+using System.Threading.Tasks;
+
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -28,22 +30,57 @@ namespace PictureApp
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+    /// 
+
+
     
  public class ImageItem
         {
             public BitmapImage ImageData { get; set; }
             public string ImageName { get; set; }
-}
+            public ulong Size { get; set; }
+            public DateTimeOffset DateModified { get; set; }
 
-public sealed partial class MainPage : Page
+            public string FileType { get; set; }
+            public int ImageHeight { get; set; }
+            public int ImageWidth { get; set; }
+    }
+
+    public class ImageItemList
+    {
+        public List<ImageItem> listImageItem { get; set; }
+        public ImageItemList()
+        {
+            listImageItem = new List<ImageItem>();
+        }
+    }
+
+    public sealed partial class MainPage : Page
 
     {
-       
+        public static ImageItemList imgList;
+        public static ImageItem displayitem;
+
         public MainPage()
         {
             this.InitializeComponent();
+            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+
         }
-       
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (imgList != null)
+            {
+                PhotoAlbum.ItemsSource = imgList.listImageItem;
+            }
+        }
+        public void PhotoAlbum_ItemClick(object sender, RoutedEventArgs e)
+        {
+            ItemClickEventArgs args = e as ItemClickEventArgs;
+            //ImageItemList listforDetailedpage = MyGridView1.ItemsSource;
+            displayitem = args.ClickedItem as ImageItem;
+            this.Frame.Navigate(typeof(ImagePage), PhotoAlbum.ItemsSource);
+        }
         public async void AddImage_Click(object sender, RoutedEventArgs e)
         {
             //trigger dialogue box to enable the user to select an image
@@ -65,37 +102,56 @@ public sealed partial class MainPage : Page
             //pick multiple files and store in files
 
             var files = await picker.PickMultipleFilesAsync();
-            List<ImageItem> ImageList = new List<ImageItem>();
-           
+
+            imgList = new ImageItemList();
+            var items = PhotoAlbum.ItemsSource;
+            // List<ImageItem> ImageList = items != null && items.GetType() == typeof(List<ImageItem>) ? (List<ImageItem>) items : new List<ImageItem>();
+
             StringBuilder output = new StringBuilder("Picked Files: \n");
             if (files.Count > 0)
-            {
+            { 
                 for (int i = 0; i < files.Count; i++)
                 {
                     using (IRandomAccessStream filestream = await files[i].OpenAsync(FileAccessMode.Read))
                     {
                         ThumbnailMode thumbnailMode = ThumbnailMode.PicturesView;
+
                         ThumbnailOptions thumbnailOptions = ThumbnailOptions.UseCurrentScale;
                         uint resize = 400;
                         BitmapImage bitmapImage = new BitmapImage();
                         StorageItemThumbnail thumb = await files[i].GetThumbnailAsync(thumbnailMode, resize, thumbnailOptions);
                         await bitmapImage.SetSourceAsync(filestream);
                         bitmapImage.SetSource(thumb);
-                        ImageList.Add(new ImageItem() { ImageData = bitmapImage, ImageName = files[i].Name });
+                        
+                        // https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-getting-file-properties
+                        BasicProperties basicProperties = await files[i].GetBasicPropertiesAsync();
+                        imgList.listImageItem.Add(new ImageItem() { ImageData = bitmapImage,
+                            ImageName = files[i].Name,
+                            FileType = files[i].FileType,
+                            ImageWidth = bitmapImage.PixelWidth,
+                            ImageHeight = bitmapImage.PixelHeight,
+                            Size = basicProperties.Size,
+                            DateModified = basicProperties.DateModified
+                    });
+
 
                     }
 
 
                 }
-                PhotoAlbum.ItemsSource = ImageList;
-
+                PhotoAlbum.ItemsSource = imgList.listImageItem;
             }
         }
 
-        public void PhotoAlbum_ItemClick(object sender, ItemClickEventArgs e)
+        private Task<BitmapImage> StorageFileToBitmapImage(StorageFile files)
         {
-            Frame.Navigate(typeof(ImagePage),e.ClickedItem);
+            throw new NotImplementedException();
         }
+
+       // public void PhotoAlbum_ItemClick(object sender, ItemClickEventArgs e)
+       // {
+       //     Frame.Navigate(typeof(ImagePage),e.ClickedItem);
+      //  }
 
     }
 }

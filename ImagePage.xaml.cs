@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -26,11 +27,37 @@ namespace PictureApp
         {
             this.InitializeComponent();
         }
-         protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
 
-            ImageItem displayitem = e.Parameter as ImageItem;
-            DisplayImage.Source = displayitem.ImageData;
+        private void MyFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+    
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            List<ImageItem> list1 = e.Parameter as List<ImageItem>;
+            // ImageItem displayitem = e.Parameter as ImageItem;
+           
+            MyFlipView1.ItemsSource = list1;
+            //var filedetails = MyFlipView1.ItemsSource;
+            ImageItem imgItem = MainPage.displayitem;
+   
+           
+         
+            foreach (ImageItem i in list1)
+            {
+
+                while (imgItem.ImageName.Equals(i.ImageName))
+                {
+                    MyFlipView1.SelectedItem = i;
+                    DisplayImageName.Text = "Name: " + i.ImageName;
+                    DisplayFileType.Text = "Type: " + i.FileType;
+                    DisplayFileSize.Text = "Size: " + i.Size.ToString();
+                    DisplayDateModified.Text = "Date Modified: " + i.DateModified.ToString();
+                    break;
+                }
+
+            }
+
             base.OnNavigatedTo(e);
 
         }

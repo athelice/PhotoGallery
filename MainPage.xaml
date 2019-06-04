@@ -15,7 +15,7 @@
                 <DataTemplate>
                     <Grid>
                         <Image Stretch="Fill" Source="{Binding ImageData}" Height="192" Width="342" />
-                        <Border Opacity=".8" Background="Black" VerticalAlignment="Bottom" >
+                        <Border Opacity=".8" Background="White" VerticalAlignment="Bottom" >
                             <TextBlock Text="{Binding ImageName}" FontSize="18" RequestedTheme="Light"/>
                         </Border>
                     </Grid>
