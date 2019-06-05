@@ -77,7 +77,6 @@ namespace PictureApp
         public void PhotoAlbum_ItemClick(object sender, RoutedEventArgs e)
         {
             ItemClickEventArgs args = e as ItemClickEventArgs;
-            //ImageItemList listforDetailedpage = MyGridView1.ItemsSource;
             displayitem = args.ClickedItem as ImageItem;
             this.Frame.Navigate(typeof(ImagePage), PhotoAlbum.ItemsSource);
         }
@@ -105,7 +104,6 @@ namespace PictureApp
 
             imgList = new ImageItemList();
             var items = PhotoAlbum.ItemsSource;
-            // List<ImageItem> ImageList = items != null && items.GetType() == typeof(List<ImageItem>) ? (List<ImageItem>) items : new List<ImageItem>();
 
             StringBuilder output = new StringBuilder("Picked Files: \n");
             if (files.Count > 0)
@@ -147,11 +145,6 @@ namespace PictureApp
         {
             throw new NotImplementedException();
         }
-
-       // public void PhotoAlbum_ItemClick(object sender, ItemClickEventArgs e)
-       // {
-       //     Frame.Navigate(typeof(ImagePage),e.ClickedItem);
-      //  }
 
     }
 }
