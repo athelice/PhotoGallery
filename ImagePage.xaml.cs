@@ -49,6 +49,7 @@ namespace PictureApp
             DisplayFileType.Text = "Type: " + selectedImage.FileType;
             DisplayFileSize.Text = "Size: " + selectedImage.Size.ToString() + " bytes";
             DisplayDateModified.Text = "Date Modified: " + selectedImage.DateModified.ToString();
+            DisplayDimensions.Text = "Dimensions: " + selectedImage.ImageWidth.ToString() + " x " + selectedImage.ImageHeight.ToString();
 
         }
 
@@ -68,6 +69,7 @@ namespace PictureApp
             DisplayFileType.Text = "Type: " + imgItem.FileType;
             DisplayFileSize.Text = "Size: " + imgItem.Size.ToString() + "bytes";
             DisplayDateModified.Text = "Date Modified: " + imgItem.DateModified.ToString();
+            DisplayDimensions.Text = "Dimensions: " + imgItem.ImageWidth.ToString() + " x " + imgItem.ImageHeight.ToString();
 
 
             // Setting the currently selected item in the flipview to the MainPage.displayitem

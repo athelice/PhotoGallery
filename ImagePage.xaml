@@ -16,11 +16,11 @@
         <!--  </Grid>-->
         <FlipView  BorderThickness="1" BorderBrush="Black" Name ="MyFlipView1"  HorizontalAlignment="Center" Margin="52, 55, 52, 0" VerticalAlignment="Top" Width="1175" Height="396" RenderTransformOrigin="0.5,0.5" SelectionChanged="MyFlipView_SelectionChanged">
             <FlipView.RenderTransform>
-                <CompositeTransform ScaleX="-1"/>
+                <CompositeTransform ScaleX="1"/>
             </FlipView.RenderTransform>
             <FlipView.ItemTemplate>
                 <DataTemplate>
-                    <Image Height="680"  Width="680"  Source="{Binding ImageData}"/>
+                    <Image Height="Auto"  Width="Auto" Stretch="Uniform" Source="{Binding ImageData}"/>
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
@@ -35,6 +35,7 @@
             <TextBlock x:Name="DisplayImageName" Text = " { Binding ImageName }"  Width = "666" Margin = "2" FontSize="18" />
             <TextBlock x:Name="DisplayFileType" Text = " { Binding FileType }" Width = "666" Margin = "2" FontSize="18" />
             <TextBlock x:Name="DisplayFileSize" Text = " { Binding Size }" Width = "666" Margin = "2" FontSize="18" />
+            <TextBlock x:Name="DisplayDimensions" Text = " { Binding ImageWidth ImageHeight }" Width = "666" Margin = "2" FontSize="18" />
             <TextBlock x:Name="DisplayDateModified" Text = " { Binding DateModified }" Width = "666" Margin = "2" FontSize="18" />
 
 

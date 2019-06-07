@@ -112,14 +112,11 @@ namespace PictureApp
                 {
                     using (IRandomAccessStream filestream = await files[i].OpenAsync(FileAccessMode.Read))
                     {
-                        ThumbnailMode thumbnailMode = ThumbnailMode.PicturesView;
-
-                        ThumbnailOptions thumbnailOptions = ThumbnailOptions.UseCurrentScale;
-                        uint resize = 400;
+                        // https://stackoverflow.com/questions/14883384/displaying-a-picture-stored-in-storage-file-in-a-metroapp
+                        // This code helps to display the entire bitmap image in the flipview with original/non-modified dimensions
                         BitmapImage bitmapImage = new BitmapImage();
-                        StorageItemThumbnail thumb = await files[i].GetThumbnailAsync(thumbnailMode, resize, thumbnailOptions);
-                        await bitmapImage.SetSourceAsync(filestream);
-                        bitmapImage.SetSource(thumb);
+                        FileRandomAccessStream stream = (FileRandomAccessStream)await files[i].OpenAsync(FileAccessMode.Read);
+                        bitmapImage.SetSource(stream);
                         
                         // https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-getting-file-properties
                         BasicProperties basicProperties = await files[i].GetBasicPropertiesAsync();
