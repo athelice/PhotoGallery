@@ -58,7 +58,10 @@ namespace PictureApp
     public sealed partial class MainPage : Page
 
     {
-        public static ImageItemList imgList;
+        // We only need to set this once
+        // This way we can continue to add images to it throughout the use of the page
+        public static ImageItemList imgList = new ImageItemList();
+
         public static ImageItem displayitem;
 
         public MainPage()
@@ -67,11 +70,21 @@ namespace PictureApp
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
 
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (imgList != null)
+            // If we already have images in the list, dont go through and add them again
+            // Only try to add on navigation when there are no images in the list
+            if( imgList.listImageItem.Count == 0 )
             {
-                PhotoAlbum.ItemsSource = imgList.listImageItem;
+                // Goes to known folder 
+                StorageFolder cameraRoll = KnownFolders.CameraRoll;
+
+                // Gets the files within that folder
+                var images = await cameraRoll.GetFilesAsync();
+
+                // Adds the images from the obtained files to the image item list
+                // false means dont save the files, because they are already saved in the camera roll
+                AddImages(images);
             }
         }
         public void PhotoAlbum_ItemClick(object sender, RoutedEventArgs e)
@@ -98,44 +111,80 @@ namespace PictureApp
             picker.FileTypeFilter.Add(".gif");
 
 
-            //pick multiple files and store in files
-
+            //pick multiple files (can select multiple images from file selector popup) and store in files
             var files = await picker.PickMultipleFilesAsync();
 
-            imgList = new ImageItemList();
-            var items = PhotoAlbum.ItemsSource;
+            // Adds the images from the obtained files to the image item list
+            // true means save the files to the cameraRoll
+            AddImages(files, true);
+        }
 
-            StringBuilder output = new StringBuilder("Picked Files: \n");
+        /**
+         * The purpose of this function is the take a list of storage files, read the images within it and then add them to the imageItemList
+         * This was created so that this function can be used on opening of application and on click of new image.
+         */
+        private async void AddImages(IReadOnlyList<StorageFile> files, bool saveFiles = false )
+        {
             if (files.Count > 0)
-            { 
+            {
+                // use the cameraRoll known folder
+                StorageFolder cameraRoll = KnownFolders.CameraRoll;
+
                 for (int i = 0; i < files.Count; i++)
                 {
-                    using (IRandomAccessStream filestream = await files[i].OpenAsync(FileAccessMode.Read))
+
+                    // only do this if we requested to save the files
+                    StorageFile imageFile;
+                    if ( saveFiles )
+                    {
+                        try
+                        {
+                            // copy the file to the camera roll folder and replace the existing if there is already one of the same file name
+                            imageFile = await files[i].CopyAsync(cameraRoll, files[i].Name, NameCollisionOption.ReplaceExisting);
+                        } catch ( Exception ex )
+                        {
+                            // If we try to add an image from the same folder to the cameraRoll it will hit this exception
+                            // log the error then continue to the next image
+                            Console.WriteLine("Caught exception trying to add file " + files[i].Name + ". " + ex.Message);
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        imageFile = files[i];
+                    }
+
+                    using (IRandomAccessStream filestream = await imageFile.OpenAsync(FileAccessMode.Read))
                     {
                         // https://stackoverflow.com/questions/14883384/displaying-a-picture-stored-in-storage-file-in-a-metroapp
                         // This code helps to display the entire bitmap image in the flipview with original/non-modified dimensions
                         BitmapImage bitmapImage = new BitmapImage();
-                        FileRandomAccessStream stream = (FileRandomAccessStream)await files[i].OpenAsync(FileAccessMode.Read);
+                        FileRandomAccessStream stream = (FileRandomAccessStream)await imageFile.OpenAsync(FileAccessMode.Read);
                         bitmapImage.SetSource(stream);
-                        
+
                         // https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-getting-file-properties
-                        BasicProperties basicProperties = await files[i].GetBasicPropertiesAsync();
-                        imgList.listImageItem.Add(new ImageItem() { ImageData = bitmapImage,
-                            ImageName = files[i].Name,
-                            FileType = files[i].FileType,
+                        BasicProperties basicProperties = await imageFile.GetBasicPropertiesAsync();
+                        imgList.listImageItem.Add(new ImageItem()
+                        {
+                            ImageData = bitmapImage,
+                            ImageName = imageFile.Name,
+                            FileType = imageFile.FileType,
                             ImageWidth = bitmapImage.PixelWidth,
                             ImageHeight = bitmapImage.PixelHeight,
                             Size = basicProperties.Size,
                             DateModified = basicProperties.DateModified
-                    });
-
-
+                        });
                     }
 
-
                 }
-                PhotoAlbum.ItemsSource = imgList.listImageItem;
             }
+
+            // Set the photoalbum source as the image item list (displaying it)
+            // Set the item source to null and then set it to the value to force a refresh
+            // https://social.msdn.microsoft.com/Forums/sqlserver/en-US/3c95941e-1794-4da1-9459-32c42fc0caf4/wpf-refresh-item-on-datagrid-after-update-on-db?forum=wpf
+            PhotoAlbum.ItemsSource = null;
+            PhotoAlbum.ItemsSource = imgList.listImageItem;
+
         }
 
         private Task<BitmapImage> StorageFileToBitmapImage(StorageFile files)
