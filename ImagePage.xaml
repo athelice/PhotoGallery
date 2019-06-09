@@ -8,12 +8,9 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid FocusVisualPrimaryBrush="Black" BorderBrush="Black">
-        <!-- <Grid HorizontalAlignment="Center" Height="138" Margin="0,442,0,0" VerticalAlignment="Top" Width="965">-->
+    <Grid FocusVisualPrimaryBrush="Black" BorderBrush="Black" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <!--<Image Name ="DisplayImage" Source="{Binding ImageData}" Height="346" Margin="-67,-377,-95,0" VerticalAlignment="Top" RenderTransformOrigin="0.079,-1.613"/>-->
-
-        <!--  </Grid>-->
+        <Image Source="Assets/20181219_165052.jpg" Stretch="UniformToFill" Opacity= "0.5"></Image>
         <FlipView  BorderThickness="1" BorderBrush="Black" Name ="MyFlipView1"  HorizontalAlignment="Center" Margin="52, 55, 52, 0" VerticalAlignment="Top" Width="1175" Height="396" RenderTransformOrigin="0.5,0.5" SelectionChanged="MyFlipView_SelectionChanged">
             <FlipView.RenderTransform>
                 <CompositeTransform ScaleX="1"/>
@@ -40,7 +37,11 @@
 
 
         </StackPanel>
-        <Button Content="Main Page" Margin="563,639,0,0"  VerticalAlignment="Top" Click="Button_Click" Height="46" Width="157" Background="#330FB690" FontWeight="Bold" BorderBrush="#FF019E9E" RenderTransformOrigin="0.529,1.435"/>
+        <Button Content="Main Page" Margin="563,639,0,0"  VerticalAlignment="Top" Click="Button_Click" Height="46" Width="157" FontWeight="Bold" BorderBrush="#FFFF006E" RenderTransformOrigin="0.529,1.435">
+            <Button.Background>
+                <SolidColorBrush Color="#FFFF006E" Opacity="0.9"/>
+            </Button.Background>
+        </Button>
 
 
     </Grid>
