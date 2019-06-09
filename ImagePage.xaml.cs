@@ -17,31 +17,26 @@ using Windows.UI.Xaml.Navigation;
 
 namespace PictureApp
 {
-     /// <summary>
+    /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class ImagePage : Page
     {
-        private ImageList Images { get; set; }
-
         public ImagePage()
         {
             this.InitializeComponent();
         }
          protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var Args = e.Parameter as ImageClickedEventArgs;
 
-            // Capture args
-            DisplayImage.Source = Args.SelectedItem.ImageData;
-            Images = Args.ImagesList;
-
+            ImageItem displayitem = e.Parameter as ImageItem;
+            DisplayImage.Source = displayitem.ImageData;
             base.OnNavigatedTo(e);
 
         }
         public void Button_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage), Images);
+            Frame.Navigate(typeof(MainPage));
         }
 
       

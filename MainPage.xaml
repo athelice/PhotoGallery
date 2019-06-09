@@ -10,7 +10,7 @@
 
     <Grid>
         <Button x:Name="Add_Image" Content="Add Image" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="AddImage_Click" Height="130" Width="158"/>
-        <GridView Name ="PhotoAlbum" ItemClick="PhotoAlbum_ItemClick"  IsItemClickEnabled="True" SelectionMode="Multiple" HorizontalAlignment="Center" Height="365" Margin="0,282,0,0" VerticalAlignment="Top" Width="708">
+        <GridView Name ="PhotoAlbum" ItemClick="PhotoAlbum_ItemClick"  IsItemClickEnabled="True" SelectionMode="Multiple" HorizontalAlignment="Left" Height="365" Margin="364,235,0,0" VerticalAlignment="Top" Width="708">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
