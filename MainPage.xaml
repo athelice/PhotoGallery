@@ -8,21 +8,21 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <Button x:Name="Add_Image" Content="Add Image" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="AddImage_Click" Height="130" Width="158"/>
-        <GridView Name ="PhotoAlbum" ItemClick="PhotoAlbum_ItemClick"  IsItemClickEnabled="True" SelectionMode="Multiple" HorizontalAlignment="Left" Height="365" Margin="364,235,0,0" VerticalAlignment="Top" Width="708">
+    <Grid Margin="0,3,0,-3" >
+        <Button x:Name="Add_Image" Content="Add Image" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Click="AddImage_Click" Height="46" Width="157" Background="#330FB690" FontWeight="Bold" BorderBrush="#FF019E9E"/>
+        <GridView Name ="PhotoAlbum" ItemClick="PhotoAlbum_ItemClick"  IsItemClickEnabled="True" SelectionMode="Multiple" HorizontalAlignment="Center" Height="395" VerticalAlignment="Top" Width="1089"  FocusVisualPrimaryBrush="#FF0A6E65" Margin="0,255,0,0">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid >
                         <Image Stretch="Fill" Source="{Binding ImageData}" Height="192" Width="342" />
-                        <Border Opacity=".8" Background="Black" VerticalAlignment="Bottom" >
+                        <Border Opacity=".8" Background="White" VerticalAlignment="Bottom" >
                             <TextBlock Text="{Binding ImageName}" FontSize="18" RequestedTheme="Light"/>
                         </Border>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <TextBlock HorizontalAlignment="Left" Margin="555,53,0,0" Text="Image Library" TextWrapping="Wrap" VerticalAlignment="Top" Height="82" Width="350"  FontSize="50" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Left" Margin="641,148,0,0" Text="Welcome! Add an image!" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="510,48,0,0" Text="Image Library" TextWrapping="Wrap" VerticalAlignment="Top" Height="82" Width="334"  FontSize="50" FontWeight="Bold" FontFamily="Segoe UI" FocusVisualPrimaryBrush="#FF6E1919"/>
+        <TextBlock HorizontalAlignment="Left" Margin="556,120,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="163"/>
     </Grid>
 </Page>

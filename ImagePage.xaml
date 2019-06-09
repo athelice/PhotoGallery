@@ -8,18 +8,41 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <Grid HorizontalAlignment="Center" Height="102" Margin="0,798,0,0" VerticalAlignment="Top" Width="965">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="717*"/>
-                <ColumnDefinition Width="248*"/>
-            </Grid.ColumnDefinitions>
-            <Image Name ="DisplayImage" Source="{Binding ImageData}" Height="420" Margin="-67,-603,-94.667,0" VerticalAlignment="Top" RenderTransformOrigin="0.079,-1.613" Grid.ColumnSpan="2"/>
-            <Button Content="Previous" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" Height="57" Width="135" RenderTransformOrigin="0.53,0.549"/>
-            <Button Content="Main Page" HorizontalAlignment="Left" Margin="405,35,0,0" VerticalAlignment="Top" Height="57" Width="156" Click="Button_Click"/>
-            <Button Content="Next" HorizontalAlignment="Left" Margin="142.869,32,0,0" VerticalAlignment="Top" Height="60" Width="95" RenderTransformOrigin="-0.621,0.484" Grid.Column="1"/>
-        </Grid>
+    <Grid FocusVisualPrimaryBrush="Black" BorderBrush="Black">
+        <!-- <Grid HorizontalAlignment="Center" Height="138" Margin="0,442,0,0" VerticalAlignment="Top" Width="965">-->
+
+        <!--<Image Name ="DisplayImage" Source="{Binding ImageData}" Height="346" Margin="-67,-377,-95,0" VerticalAlignment="Top" RenderTransformOrigin="0.079,-1.613"/>-->
+
+        <!--  </Grid>-->
+        <FlipView  BorderThickness="1" BorderBrush="Black" Name ="MyFlipView1"  HorizontalAlignment="Center" Margin="52, 55, 52, 0" VerticalAlignment="Top" Width="1175" Height="396" RenderTransformOrigin="0.5,0.5" SelectionChanged="MyFlipView_SelectionChanged">
+            <FlipView.RenderTransform>
+                <CompositeTransform ScaleX="1"/>
+            </FlipView.RenderTransform>
+            <FlipView.ItemTemplate>
+                <DataTemplate>
+                    <Image Height="Auto"  Width="Auto" Stretch="Uniform" Source="{Binding ImageData}"/>
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
+        <StackPanel Margin = "52, 450,52, 100" BorderThickness="1" BorderBrush="Black"  Width="1175">
+            <StackPanel.FocusVisualPrimaryBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.FocusVisualPrimaryBrush>
+
+            <TextBlock x:Name="DisplayImageName" Text = " { Binding ImageName }"  Width = "666" Margin = "2" FontSize="18" />
+            <TextBlock x:Name="DisplayFileType" Text = " { Binding FileType }" Width = "666" Margin = "2" FontSize="18" />
+            <TextBlock x:Name="DisplayFileSize" Text = " { Binding Size }" Width = "666" Margin = "2" FontSize="18" />
+            <TextBlock x:Name="DisplayDimensions" Text = " { Binding ImageWidth ImageHeight }" Width = "666" Margin = "2" FontSize="18" />
+            <TextBlock x:Name="DisplayDateModified" Text = " { Binding DateModified }" Width = "666" Margin = "2" FontSize="18" />
+
+
+        </StackPanel>
+        <Button Content="Main Page" Margin="563,639,0,0"  VerticalAlignment="Top" Click="Button_Click" Height="46" Width="157" Background="#330FB690" FontWeight="Bold" BorderBrush="#FF019E9E" RenderTransformOrigin="0.529,1.435"/>
 
 
     </Grid>
+
 </Page>
