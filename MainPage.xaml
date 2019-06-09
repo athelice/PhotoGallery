@@ -8,7 +8,11 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Margin="0,3,0,-3" >
+    <!--https://www.c-sharpcorner.com/article/create-a-background-image-in-uwp/-->
+    <Grid Margin="0,3,0,-3" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Image Source="Assets/20181219_165052.jpg" Stretch="UniformToFill"></Image>
+
         <Button x:Name="Add_Image" Content="Add Image" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Click="AddImage_Click" Height="46" Width="157" Background="#330FB690" FontWeight="Bold" BorderBrush="#FF019E9E"/>
         <GridView Name ="PhotoAlbum" ItemClick="PhotoAlbum_ItemClick"  IsItemClickEnabled="True" SelectionMode="Multiple" HorizontalAlignment="Center" Height="395" VerticalAlignment="Top" Width="1089"  FocusVisualPrimaryBrush="#FF0A6E65" Margin="0,255,0,0">
             <GridView.ItemTemplate>
@@ -18,6 +22,7 @@
                         <Border Opacity=".8" Background="White" VerticalAlignment="Bottom" >
                             <TextBlock Text="{Binding ImageName}" FontSize="18" RequestedTheme="Light"/>
                         </Border>
+                        
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
